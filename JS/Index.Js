@@ -40,7 +40,7 @@ function Human(species, humanHeightFeet, humanHeightInches, humanWeight, humanDi
     this.fact = fact
 }
 // Fetch Dinosaur data 
-window.fetch('http://127.0.0.1:50841/json/dino.json')
+window.fetch('http://127.0.0.1:51540/json/dino.json')
     .then(response => response.json())
     .then(data => { //get data
         getDinoArray(data.Dinos) //pass array into function
@@ -77,10 +77,10 @@ function removeForm() {
     document.querySelector("#dino-compare").style.display = 'none'
 }
 // generate tiles 
-function generateTiles(animal, human) {
-    animal.splice(4, 0, human)
+function generateTiles(animalObject, human) {
+    animalObject.splice(4, 0, human)
     for (let index = 0; index < 9; index++) {
-        animal = animal[index]
+        animal = animalObject[index]
         let tileDiv = document.createElement('div')
         tileDiv.className = 'grid-item'
             // creating tag for the tile
