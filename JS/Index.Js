@@ -7,15 +7,18 @@ function Dino(species, dinoWeight, dinoHeight, dinoDiet, where, when, fact) {
     this.where = where
     this.when = when
     this.fact = fact
+        // compare weight
     this.compareWeight = function(humanWeight) {
-        weightDifference = dinoWeight - humanWeight
-        return `There's a ${Math.abs(weightDifference)} pound difference between you and this dinosaur`
-    }
+            weightDifference = dinoWeight - humanWeight
+            return `There's a ${Math.abs(weightDifference)} pound difference between you and this dinosaur`
+        }
+        // compare height
     this.compareHeight = function(humanHeightFeet, humanHeightInches) {
-        totalHeight = Number(humanHeightFeet * 12) + Number(humanHeightInches)
-        heightDifference = dinoHeight - totalHeight
-        return `There's a ${heightDifference} inch difference between you and this dinosaur`
-    }
+            totalHeight = Number(humanHeightFeet * 12) + Number(humanHeightInches)
+            heightDifference = dinoHeight - totalHeight
+            return `There's a ${heightDifference} inch difference between you and this dinosaur`
+        }
+        // compare diet
     this.compareDiet = function(humanDiet) {
         if (dinoDiet == humanDiet.toLowerCase()) { //convert capitals to all lower case
             let result = 'You both eat the same types of food'
@@ -52,7 +55,6 @@ function getDinoArray(dinos) {
         dinoArray.push(newDinoObj)
 
     });
-    console.log(dinoArray)
     return dinoArray
 }
 // Use IIFE to get human data 
