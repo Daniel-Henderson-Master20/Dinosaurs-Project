@@ -10,21 +10,21 @@ function Dino(species, dinoWeight, dinoHeight, dinoDiet, where, when, fact) {
         // compare weight
     this.compareWeight = function(humanWeight) {
             weightDifference = dinoWeight - humanWeight
-            return `There's a ${Math.abs(weightDifference)} pound difference between you and this dinosaur`
+            return `There's a ${Math.abs(weightDifference)} pound difference between you and this dinosaur!`
         }
         // compare height
     this.compareHeight = function(humanHeightFeet, humanHeightInches) {
             totalHeight = Number(humanHeightFeet * 12) + Number(humanHeightInches)
             heightDifference = dinoHeight - totalHeight
-            return `There's a ${heightDifference} inch difference between you and this dinosaur`
+            return `There's a ${heightDifference} inch difference between you and this dinosaur!`
         }
         // compare diet
     this.compareDiet = function(humanDiet) {
         if (dinoDiet == humanDiet.toLowerCase()) { //convert capitals to all lower case
-            let result = 'You both eat the same types of food'
+            let result = 'You both eat the same types of food!'
             return result
         } else {
-            let result = ` This Dino is a ${dinoDiet}`
+            let result = ` This Dino is a ${dinoDiet}!`
             return result
         }
     }
@@ -40,10 +40,10 @@ function Human(species, humanHeightFeet, humanHeightInches, humanWeight, humanDi
     this.fact = fact
 }
 // Fetch Dinosaur data 
-window.fetch('http://127.0.0.1:65292/json/dino.json')
-    .then(response => response.json()) //get response from url
+window.fetch('http://127.0.0.1:50841/json/dino.json')
+    .then(response => response.json())
     .then(data => { //get data
-        getDinoArray(data.Dinos) //pass array of Dino objects into the getDinoArray function (line 34)
+        getDinoArray(data.Dinos) //pass array into function
     })
     .catch(error => console.log(`There was a data fetch error: ${error}`));
 
@@ -67,7 +67,7 @@ function getHumanData() {
         humanWeight = document.querySelector('#weight').value;
         humanDiet = document.querySelector('#diet').value;
         fact = ""
-            //create a new human object
+            //new human object
         const human = new Human(species, humanHeightFeet, humanHeightInches, humanWeight, humanDiet, fact)
         return human
     })();
@@ -77,10 +77,10 @@ function removeForm() {
     document.querySelector("#dino-compare").style.display = 'none'
 }
 // generate tiles 
-function generateTiles(animalObj, human) {
-    animalObj.splice(4, 0, human)
+function generateTiles(animal, human) {
+    animal.splice(4, 0, human)
     for (let index = 0; index < 9; index++) {
-        animal = animalObj[index]
+        animal = animal[index]
         let tileDiv = document.createElement('div')
         tileDiv.className = 'grid-item'
             // creating tag for the tile
@@ -114,7 +114,7 @@ function generateTiles(animalObj, human) {
             <h4>${facts[factNumber]}</h4>`
             tileDiv.appendChild(tile)
         }
-        // creates the element on the page
+        // create the element on the page
         document.querySelector("#grid").appendChild(tileDiv)
     }
 }
