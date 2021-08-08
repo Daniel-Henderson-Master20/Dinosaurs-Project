@@ -1,24 +1,24 @@
-//Dino Constructor
-function Dino(species, dinoWeight, dinoHeight, dinoDiet, where, when, fact) {
+//Dino Constructor function with properties to match the json data
+function Dino(species, dinoDiet, dinoHeight, dinoWeight, when, where, fact) {
     this.species = species
-    this.dinoWeight = dinoWeight
-    this.dinoHeight = dinoHeight
     this.dinoDiet = dinoDiet
-    this.where = where
+    this.dinoHeight = dinoHeight
+    this.dinoWeight = dinoWeight
     this.when = when
+    this.where = where
     this.fact = fact
-        // compare weight
-    this.compareWeight = function(humanWeight) {
-            weightDifference = dinoWeight - humanWeight
-            return `There's a ${Math.abs(weightDifference)} pound difference between you and this dinosaur!`
-        }
-        // compare height
+        // compare the difference in height of dino and human. Human height is converted to inches to match json info. return a comment about the difference in height.
     this.compareHeight = function(humanHeightFeet, humanHeightInches) {
             totalHeight = Number(humanHeightFeet * 12) + Number(humanHeightInches)
-            heightDifference = dinoHeight - totalHeight
-            return `There's a ${heightDifference} inch difference between you and this dinosaur!`
+            heightDiff = dinoHeight - totalHeight
+            return `There's a ${heightDiff} inch difference between you and this dinosaur!`
         }
-        // compare diet
+        // compare weight of dino and human then return a comment about that weight
+    this.compareWeight = function(humanWeight) {
+            weightDiff = dinoWeight - humanWeight
+            return `There's a ${Math.abs(weightDiff)} pound difference between you and this dinosaur!`
+        }
+        // compare diet of dino and human. then return one of two different comments.
     this.compareDiet = function(humanDiet) {
         if (dinoDiet == humanDiet.toLowerCase()) { //convert capitals to all lower case
             let result = 'You both eat the same types of food!'
@@ -30,93 +30,91 @@ function Dino(species, dinoWeight, dinoHeight, dinoDiet, where, when, fact) {
     }
 
 }
-//Human Object
-function Human(species, humanHeightFeet, humanHeightInches, humanWeight, humanDiet, fact) {
+// Creating Dino Array function to be called during button click
+function getDinoArray(dinos) {
+    dinoArray = []
+    dinos.forEach((dino) => {
+        newDinoObject = new Dino(dino.species, dino.weight, dino.height, dino.diet, dino.where, dino.when, dino.fact)
+        dinoArray.push(newDinoObject)
+    });
+    return dinoArray
+}
+//Human Object function with properties to match the form data
+function Human(species, humanDiet, humanWeight, humanHeightFeet, humanHeightInches, fact) {
     this.species = species
+    this.humanDiet = humanDiet
+    this.humanWeight = humanWeight
     this.humanHeightFeet = humanHeightFeet
     this.humanHeightInches = humanHeightInches
-    this.humanWeight = humanWeight
-    this.humanDiet = humanDiet
     this.fact = fact
 }
-// Fetch Dinosaur data 
-window.fetch('http://127.0.0.1:51540/json/dino.json')
+// Fetch Dinosaur data from json file
+window.fetch('http://127.0.0.1:61898/json/dino.json')
     .then(response => response.json())
     .then(data => { //get data
         getDinoArray(data.Dinos) //pass array into function
     })
     .catch(error => console.log(`There was a data fetch error: ${error}`));
-
-// Creating Dino Array 
-function getDinoArray(dinos) {
-    dinoArray = []
-    dinos.forEach((dino) => {
-        newDinoObj = new Dino(dino.species, dino.weight, dino.height, dino.diet, dino.where, dino.when, dino.fact)
-        dinoArray.push(newDinoObj)
-
-    });
-    return dinoArray
-}
 // Use IIFE to get human data 
 function getHumanData() {
     return (function() {
         humanName = document.querySelector('#name').value;
         species = "Human"
+        humanDiet = document.querySelector('#diet').value;
+        humanWeight = document.querySelector('#weight').value;
         humanHeightFeet = document.querySelector('#feet').value;
         humanHeightInches = document.querySelector('#inches').value;
-        humanWeight = document.querySelector('#weight').value;
-        humanDiet = document.querySelector('#diet').value;
         fact = ""
             //new human object
-        const human = new Human(species, humanHeightFeet, humanHeightInches, humanWeight, humanDiet, fact)
+        const human = new Human(species, humanWeight, humanDiet, humanHeightFeet, humanHeightInches, fact)
         return human
     })();
 }
-// remove form 
-function removeForm() {
-    document.querySelector("#dino-compare").style.display = 'none'
-}
-// generate tiles 
+// generate dino tiles function and human tile function. Using splice to put human in center tile. and else if for pigeon tile. Else statement to generate random fact 
 function generateTiles(animalObject, human) {
     animalObject.splice(4, 0, human)
-    for (let index = 0; index < 9; index++) {
-        animal = animalObject[index]
-        let tileDiv = document.createElement('div')
-        tileDiv.className = 'grid-item'
-            // creating tag for the tile
-        if (index === 4) {
-            animal.species = document.querySelector('#name').value
-            humanWeight = document.querySelector('#weight').value
+    for (let i = 0; i < 9; i++) {
+        creature = animalObject[i]
+        let tDiv = document.createElement('div')
+        tDiv.className = 'grid-item'
+            // creating tag for the tile 
+        if (i === 4) {
+            creature.species = document.querySelector('#name').value
+            humanDiet = document.querySelector('#diet').value
             humanHeightFeet = document.querySelector('#feet').value
             humanHeightInches = document.querySelector('#inches').value
-            humanDiet = document.querySelector('#diet').value
+            humanWeight = document.querySelector('#weight').value
             let tile = document.createElement("h2")
-            tile.innerHTML = `<h2>${animal.species}</h2>
-            <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/human.png" alt = "picture of ${animal.species}"/>`
-            tileDiv.appendChild(tile)
-        } else if (index === 8) { // pigeon
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                    <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/human.png" alt = "picture of ${creature.species}"/>`
+            tDiv.appendChild(tile)
+        } else if (i === 8) { // pigeon
             let tile = document.createElement("h2")
-            tile.innerHTML = `<h2>${animal.species}</h2>
-            <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${animal.species.toLowerCase()}.png" alt = "picture of ${animal.species}"/>
-            <h4>${animal.fact}</h4>`
-            tileDiv.appendChild(tile)
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                <h3>${creature.fact}</h3>`
+            tDiv.appendChild(tile)
         } else {
-            //random facts everytime tiles render
+            //generates a random fact everytime tiles render
             const factNumber = Math.floor(Math.random() * 4) // select a random number 
-            let genericFact = animal.fact
-            let aCW = animal.compareWeight(humanWeight)
-            let aCH = animal.compareHeight(humanHeightFeet, humanHeightInches)
-            let aCD = animal.compareDiet(humanDiet)
-            facts = [genericFact, aCW, aCH, aCD]
+            let cCD = creature.compareDiet(humanDiet)
+            let cCW = creature.compareWeight(humanWeight)
+            let cCH = creature.compareHeight(humanHeightFeet, humanHeightInches)
+            let genericFact = creature.fact
+            facts = [genericFact, cCD, cCW, cCH]
             let tile = document.createElement("h2")
-            tile.innerHTML = `<h2>${animal.species}</h2>
-            <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${animal.species.toLowerCase()}.png" alt = "picture of ${animal.species}"/>
-            <h4>${facts[factNumber]}</h4>`
-            tileDiv.appendChild(tile)
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                    <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                    <h3>${facts[factNumber]}</h3>`
+            tDiv.appendChild(tile)
         }
         // create the element on the page
-        document.querySelector("#grid").appendChild(tileDiv)
+        document.querySelector("#grid").appendChild(tDiv)
     }
+}
+// remove form from screen after click event
+function removeForm() {
+    document.querySelector("#dino-compare").style.display = 'none'
 }
 // On button click, prepare and display infographic
 let button = document.querySelector("#btn")
