@@ -49,7 +49,7 @@ function Human(species, humanDiet, humanWeight, humanHeightFeet, humanHeightInch
     this.fact = fact
 }
 // Fetch Dinosaur data from json file
-window.fetch('http://127.0.0.1:61898/json/dino.json')
+window.fetch('json/dino.json')
     .then(response => response.json())
     .then(data => { //get data
         getDinoArray(data.Dinos) //pass array into function
@@ -86,12 +86,12 @@ function generateTiles(animalObject, human) {
             humanWeight = document.querySelector('#weight').value
             let tile = document.createElement("h2")
             tile.innerHTML = `<h3>${creature.species}</h3>
-                    <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/human.png" alt = "picture of ${creature.species}"/>`
+                    <img src="images/human.png" alt = "picture of ${creature.species}"/>`
             tDiv.appendChild(tile)
         } else if (i === 8) { // pigeon
             let tile = document.createElement("h2")
             tile.innerHTML = `<h3>${creature.species}</h3>
-                <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                <img src="/images${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
                 <h3>${creature.fact}</h3>`
             tDiv.appendChild(tile)
         } else {
@@ -104,7 +104,7 @@ function generateTiles(animalObject, human) {
             facts = [genericFact, cCD, cCW, cCH]
             let tile = document.createElement("h2")
             tile.innerHTML = `<h3>${creature.species}</h3>
-                    <img src="/Users/danielhenderson/Desktop/Dinosaurs-Project/images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                    <img src="/images${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
                     <h3>${facts[factNumber]}</h3>`
             tDiv.appendChild(tile)
         }
